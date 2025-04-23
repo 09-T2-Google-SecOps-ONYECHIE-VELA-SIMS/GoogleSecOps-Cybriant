@@ -1,0 +1,60 @@
+filter {
+     # parse the message into individual variables, identified as column1, column2, column3, etc.
+     #in other words, this section automatically sets the list of
+     #columns to column1, column2, etc... because we didn't specify
+     #a columns setting show in the below documentation:
+     #https://www.elastic.co/guide/en/logstash/current/plugins-filters-csv.html
+csv {
+  source => "message"
+  columns => [
+   
+  ]
+}
+
+
+# assign each value to a token
+#i think this part assigns each of the actual data in the places of
+#the given column name to the defined column1, column 2, etc. variables
+#created during csv plugin
+  mutate {
+    replace => {
+      "IP" => "%{column1}"
+      "Hostname" => "%{column2}"
+      "Port" => "%{column3}"
+      "Port Protocol" => "%{column4}"
+      "CVSS" => "%{column5}"
+      "Severity" => "%{column6}"
+      "QoD" => "%{column7}"
+      "Solution Type" => "%{column8}"
+      "NVT Name" => "%{column9}"
+      "Summary" => "%{column10}"
+      "Specific Result" => "%{column11}"
+      "NVT OID" => "%{column12}"
+      "CVEs" => "%{column13}"
+      "Task ID" => "%{column14}"
+      "Task Name" => "%{column15}"
+      "Timestamp" => "%{column16}"
+      "Result ID" => "%{column17}"
+      "Impact" => "%{column18}"
+      "Solution" => "%{column19}"
+      "Affected Software/OS" => "%{column20}"
+      "Vulnerability Insight" => "%{column21}"
+      "Vulnerability Detection Method" => "%{column22}"
+      "Product Detection Result" => "%{column23}"
+      "BIDs" => "%{column24}"
+      "CERTS" => "%{column25}"
+      "Other References" => "%{column26}"
+     
+    }
+    #then u would transform the actual data into data
+    #acceptable by udm fields. Ex: dates have to be
+    #lowercased in UDM but in our csv they are capitalized,
+    #so change it here. Come back to this and do this as we
+    #run into problems mapping each column to fields.    
+}
+mutate {
+     merge => {
+       "event.idm.read_only_udm.principal.ip" => "column1"
+     } #This is the actual mapping of our variable to udm variable
+   }
+}
