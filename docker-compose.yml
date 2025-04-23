@@ -1,0 +1,296 @@
+volumes:
+  bindplane:
+  prometheus:
+  gpg_data_vol:
+  scap_data_vol:
+  cert_data_vol:
+  data_objects_vol:
+  gvmd_data_vol:
+  psql_data_vol:
+  vt_data_vol:
+  notus_data_vol:
+  psql_socket_vol:
+  gvmd_socket_vol:
+  ospd_openvas_socket_vol:
+  redis_socket_vol:
+  openvas_data_vol:
+  openvas_log_data_vol:
+
+services:
+  bindplane:
+    container_name: bindplane-server
+    restart: always
+    image: ghcr.io/observiq/bindplane-ee:1.86.1
+    ports:
+      - "3001:3001"
+    environment:
+      - BINDPLANE_LICENSE=H4sIAAAAAAAA/1RVC3PauBb+Ldf3du60E1L5iZWZnTY1j5gNsBDA2KPtVrLkYGIMG3AwdNvfvnOOEbObCUJIR+f5ne98N3Jp3BnKVY6dOlaLKkFajpnylqDCbVlZ6ti25JQKYtwYh9NOGXdGf7t9LpRxY2yPpXo17ozgJF5zXh6MG0PVu/yVH/JtadwZlmm5LWK1zPaMkDv8T4wbY58/l/xQvYIuZoxHXcZqbsKivlWM1e2MsZrCwtMHWAljtaCM1cT96TJWqzaI+T6cwJ1Ui9YUzuGE+w6HL6oYqzPzK7x1D4y9wkYwVhHbzfCKVYTY6gD7jDG+e4FnHmO1aeMCvynoouCcKRodGRhJUzgBX3wJXsAD6erbLP1z/hPetROwYYFOJUAkHX78+ASOtOHIajkf4ds9joKzNmaCaurqnOBOyhGs/rsfYMwDl30QywhjoNfHDNl5D9474B8euKhuAyYwe04Hwjcz5/gr5lV+0QYy0EJtuCbCAgXOjjFmVAmmO9CZwVJksKMgJSDHknMMZt74Ik3QYjmpvlfZAMtyyxjkXUFUwnrCRFHGOCSVW5jh4JouCkvaTjCMNVx6WC7QqhwMCZ8gShx8/KEpKqsz9Me55Kc2vYkWEt74mX67GK6V+B2BAjLkCEalh8VMcsY4ROHYqNpZXsBVEYdgMogLoabZz4qxUucvA+d8MC5gIeoRMY3FGmOdxaoR01EK8wMWDjS7JgILgJFJHYUP8fgN5mHX/gtWNWD418Tne1i2DKvtA96pv2kh2rBYUwSIZOyNGdChG54Xxp3x/KYK/nl/qKQqD/vbF1WWas+Pt0pWxo0h+YEDMZwGuyQIvXAzN5PZ5ByfJ6fHWVHE6/vDqNNbx09mPo5C83E22MTnyXloTVfjWZEPg3AfllM37c/zcT54EBYtRX+ePwaDN2m5RZqHXvgycuNysIsjl4T5MRf2oIwjd6c2PcIjWj1Fk3ych8fhfDcavchxtEiCyXl+jDqrL7P5YDTuzp2hWXSGp3AfbhZO2i9O8XK6E5YD707DGfh1f3qcde1F5/44XjefKEf5QxwV+3C9zRM7KUS/d5/aUzPpLyr5MKy4tajEZnGOl2mVRFMT/OPL0TzdFCsRhF6y6e1Ta74PN+ZKdXtlErkkPYXeMDjmIuo5i+WoSMthPl7fNzK9Lydh7YrYnp7D9fb4GAwO8XLVBR/UvKgSa3GWXTO43J3jqHeeWe5ePf3TVlHJ/uIkNr19uN5t4qg+J0vyy6Vaf/ybVgEM1rVZ3Ya7qI8YWQA4AE8p13SbZUEfDvw4Q5h7Qvc4AjizNGlR/p+mjwVSINV2uJcML+xTEa+dookJtsbz5NIhzBi1Na/58gF5QjoPyGnvQaYNnlES4QlyFcKe4EAgmhzRKHeRmDu4+p9wCmBjXg0QxirX4tBLPjoLAhUxKbYFxkJbPbyg72BFblNI7O+w2a79iw2JOyRW35KYAGB90IYkhAv2rANcjpeYX5wmQmnO5iZG1k4VKrWRm0SnxkR+1tOG0x86UqRCLhqiEeb34Q3QQYpkcau3/pWYcSBR++sSyE16oZ4rAocjeuBMd/ke1Ct7pWPC6JE0JUFDAs143tv/6v82k1IHRKzf/n+dBeg/zkAv7z91GatsLh2MGamQ2zoFnIaX8dBkWapPY0wmevi+DMAXU369siOGYzYzg6bPb+ixRh5iUyEwGoBu4TdihGv2xGjxOm1q/h1krjXJ5PwKJIzeRpJGvZ81i1Or0nPFxKGaIbJX++s4QgMNJnFEtF3BDOPH3wEAAP//I/6ToVsJAAA=
+      - BINDPLANE_USERNAME=admin
+      - BINDPLANE_PASSWORD=admin
+      - BINDPLANE_REMOTE_URL=http://10.10.10.184:3001
+      - BINDPLANE_SESSION_SECRET=$(uuidgen)
+      - BINDPLANE_LOG_OUTPUT=stdout
+      - BINDPLANE_ACCEPT_EULA=true
+      - BINDPLANE_PROMETHEUS_ENABLE=true
+      - BINDPLANE_PROMETHEUS_ENABLE_REMOTE=true
+      - BINDPLANE_PROMETHEUS_HOST=prometheus
+      - BINDPLANE_PROMETHEUS_PORT=9090
+      - BINDPLANE_TRANSFORM_AGENT_ENABLE_REMOTE=true
+      - BINDPLANE_TRANSFORM_AGENT_REMOTE_AGENTS=transform:4568
+      - BINDPLANE_STORE_TYPE=postgres
+      - BINDPLANE_POSTGRES_HOST=postgres
+      - BINDPLANE_POSTGRES_PORT=5432
+      - BINDPLANE_POSTGRES_DATABASE=bindplane
+      - BINDPLANE_POSTGRES_USERNAME=bindplane
+      - BINDPLANE_POSTGRES_PASSWORD=password
+    volumes:
+      - openvas_log_data_vol:/openvasLogs 
+    depends_on:
+      - postgres
+      - prometheus
+      - transform
+
+  postgres:
+    container_name: bindplane-postgres
+    restart: always
+    image: postgres:16
+    environment:
+      - POSTGRES_DB=bindplane
+      - POSTGRES_USER=bindplane
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - bindplane:/var/lib/postgresql/data
+
+  prometheus:
+    container_name: bindplane-prometheus
+    restart: always
+    image: ghcr.io/observiq/bindplane-prometheus:1.86.1
+    volumes:
+      - prometheus:/prometheus
+
+  transform:
+    container_name: bindplane-transform-agent
+    restart: always
+    image: ghcr.io/observiq/bindplane-transform-agent:1.86.1-bindplane
+  owhl:
+    container_name: owlh
+    restart: always
+    image: owlh/owlh-allinone:0.10.0.001
+    volumes:
+      - /data:/data
+    ports:
+      - "443:443"
+      - "30001-30020:50001-50020"
+      - "8005:8005"
+  vulnerability-tests:
+    image: registry.community.greenbone.net/community/vulnerability-tests
+    environment:
+      FEED_RELEASE: "24.10"
+    volumes:
+      - vt_data_vol:/mnt
+
+  notus-data:
+    image: registry.community.greenbone.net/community/notus-data
+    volumes:
+      - notus_data_vol:/mnt
+
+  scap-data:
+    image: registry.community.greenbone.net/community/scap-data
+    volumes:
+      - scap_data_vol:/mnt
+
+  cert-bund-data:
+    image: registry.community.greenbone.net/community/cert-bund-data
+    volumes:
+      - cert_data_vol:/mnt
+
+  dfn-cert-data:
+    image: registry.community.greenbone.net/community/dfn-cert-data
+    volumes:
+      - cert_data_vol:/mnt
+    depends_on:
+      - cert-bund-data
+
+  data-objects:
+    image: registry.community.greenbone.net/community/data-objects
+    environment:
+      FEED_RELEASE: "24.10"
+    volumes:
+      - data_objects_vol:/mnt
+
+  report-formats:
+    image: registry.community.greenbone.net/community/report-formats
+    environment:
+      FEED_RELEASE: "24.10"
+    volumes:
+      - data_objects_vol:/mnt
+    depends_on:
+      - data-objects
+
+  gpg-data:
+    image: registry.community.greenbone.net/community/gpg-data
+    volumes:
+      - gpg_data_vol:/mnt
+
+  redis-server:
+    image: registry.community.greenbone.net/community/redis-server
+    restart: on-failure
+    volumes:
+      - redis_socket_vol:/run/redis/
+
+  pg-gvm:
+    image: registry.community.greenbone.net/community/pg-gvm:stable
+    restart: on-failure
+    volumes:
+      - psql_data_vol:/var/lib/postgresql
+      - psql_socket_vol:/var/run/postgresql
+
+  gvmd:
+    image: registry.community.greenbone.net/community/gvmd:stable
+    restart: on-failure
+    volumes:
+      - gvmd_data_vol:/var/lib/gvm
+      - scap_data_vol:/var/lib/gvm/scap-data/
+      - cert_data_vol:/var/lib/gvm/cert-data
+      - data_objects_vol:/var/lib/gvm/data-objects/gvmd
+      - vt_data_vol:/var/lib/openvas/plugins
+      - psql_data_vol:/var/lib/postgresql
+      - gvmd_socket_vol:/run/gvmd
+      - ospd_openvas_socket_vol:/run/ospd
+      - psql_socket_vol:/var/run/postgresql
+    depends_on:
+      pg-gvm:
+        condition: service_started
+      scap-data:
+        condition: service_completed_successfully
+      cert-bund-data:
+        condition: service_completed_successfully
+      dfn-cert-data:
+        condition: service_completed_successfully
+      data-objects:
+        condition: service_completed_successfully
+      report-formats:
+        condition: service_completed_successfully
+
+  gsa:
+    image: registry.community.greenbone.net/community/gsa:stable
+    restart: on-failure
+    ports:
+      - 0.0.0.0:9392:80
+    volumes:
+      - gvmd_socket_vol:/run/gvmd
+    depends_on:
+      - gvmd
+  # Sets log level of openvas to the set LOG_LEVEL within the env
+  # and changes log output to /var/log/openvas instead /var/log/gvm
+  # to reduce likelyhood of unwanted log interferences
+  configure-openvas:
+    image: registry.community.greenbone.net/community/openvas-scanner:stable
+    volumes:
+      - openvas_data_vol:/mnt
+      - openvas_log_data_vol:/var/log/openvas
+    command:
+      - /bin/sh
+      - -c
+      - |
+        printf "table_driven_lsc = yes\nopenvasd_server = http://openvasd:80\n" > /mnt/openvas.conf
+        sed "s/127/128/" /etc/openvas/openvas_log.conf | sed 's/gvm/openvas/' > /mnt/openvas_log.conf
+        chmod 644 /mnt/openvas.conf
+        chmod 644 /mnt/openvas_log.conf
+        touch /var/log/openvas/openvas.log
+        chmod 666 /var/log/openvas/openvas.log
+
+  # shows logs of openvas
+  openvas:
+    image: registry.community.greenbone.net/community/openvas-scanner:stable
+    restart: on-failure
+    volumes:
+      - openvas_data_vol:/etc/openvas
+      - openvas_log_data_vol:/var/log/openvas
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cat /etc/openvas/openvas.conf
+        tail -f /var/log/openvas/openvas.log
+    depends_on:
+      configure-openvas:
+        condition: service_completed_successfully
+
+  openvasd:
+    image: registry.community.greenbone.net/community/openvas-scanner:stable
+    restart: on-failure
+    environment:
+      # `service_notus` is set to disable everything but notus,
+      # if you want to utilize openvasd directly removed `OPENVASD_MODE`
+      OPENVASD_MODE: service_notus
+      GNUPGHOME: /etc/openvas/gnupg
+      LISTENING: 0.0.0.0:80
+    volumes:
+      - openvas_data_vol:/etc/openvas
+      - openvas_log_data_vol:/var/log/openvas
+      - gpg_data_vol:/etc/openvas/gnupg
+      - notus_data_vol:/var/lib/notus
+    # enable port forwarding when you want to use the http api from your host machine
+    # ports:
+    #   - 127.0.0.1:3000:80
+    depends_on:
+      vulnerability-tests:
+        condition: service_completed_successfully
+      configure-openvas:
+        condition: service_completed_successfully
+      gpg-data:
+        condition: service_completed_successfully
+    networks:
+      default:
+        aliases:
+          - openvasd
+
+  ospd-openvas:
+    image: registry.community.greenbone.net/community/ospd-openvas:stable
+    restart: on-failure
+    hostname: ospd-openvas.local
+    cap_add:
+      - NET_ADMIN # for capturing packages in promiscuous mode
+      - NET_RAW # for raw sockets e.g. used for the boreas alive detection
+    security_opt:
+      - seccomp=unconfined
+      - apparmor=unconfined
+    command:
+      [
+        "ospd-openvas",
+        "-f",
+        "--config",
+        "/etc/gvm/ospd-openvas.conf",
+        "--notus-feed-dir",
+        "/var/lib/notus/advisories",
+        "-m",
+        "666",
+      ]
+    volumes:
+      - gpg_data_vol:/etc/openvas/gnupg
+      - vt_data_vol:/var/lib/openvas/plugins
+      - notus_data_vol:/var/lib/notus
+      - ospd_openvas_socket_vol:/run/ospd
+      - redis_socket_vol:/run/redis/
+      - openvas_data_vol:/etc/openvas/
+      - openvas_log_data_vol:/var/log/openvas
+    depends_on:
+      redis-server:
+        condition: service_started
+      gpg-data:
+        condition: service_completed_successfully
+      vulnerability-tests:
+        condition: service_completed_successfully
+      configure-openvas:
+        condition: service_completed_successfully
+
+  gvm-tools:
+    image: registry.community.greenbone.net/community/gvm-tools
+    volumes:
+      - gvmd_socket_vol:/run/gvmd
+      - ospd_openvas_socket_vol:/run/ospd
+    depends_on:
+      - gvmd
+      - ospd-openvas
+
